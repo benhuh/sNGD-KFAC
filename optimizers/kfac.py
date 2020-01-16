@@ -121,7 +121,7 @@ class KFACOptimizer(optim.Optimizer):
         # p_grad_mat is of output_dim * input_dim
         # inv((ss')) p_grad_mat inv(aa') = [ Q_g (1/R_g) Q_g^T ] @ p_grad_mat @ [Q_a (1/R_a) Q_a^T]
         v1 = self.Q_g[m].t() @ p_grad_mat @ self.Q_a[m]
-        v2 = v1 / (self.d_g[m].unsqueeze(1) * self.d_a[m].unsqueeze(0) + damping)
+        v2 = v1 / (self.d_g[m].unsqueeze(1) * self.d_a[m].unsqueeze(0) + damping).sqrt()
         v = self.Q_g[m] @ v2 @ self.Q_a[m].t()
         if m.bias is not None:
             # we always put gradient w.r.t weight in [0]
